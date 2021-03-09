@@ -1,5 +1,6 @@
 package io.github.oliviercailloux.persons_manager;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
@@ -63,7 +64,7 @@ public interface PersonsManager {
 	 * @return <code>true</code> iff at least one person managed by this instance
 	 *         has the name given in the stream
 	 */
-	public boolean contains(InputStream personNameAsStream);
+	public boolean contains(InputStream personNameAsStream) throws IOException;
 
 	/**
 	 * Returns an immutable copy of the persons this instance manages, as a mapping,
