@@ -83,8 +83,7 @@ public interface PersonsManager {
 	 * never exhibit duplicated persons. The iterator will accordingly iterate over
 	 * {@link #size()} elements.
 	 * <p>
-	 * Calling {@link Iterator#remove()} on the returned iterator removes a person
-	 * from this manager.
+	 * (The returned iterator need not support removal.)
 	 *
 	 * @return an iterator that iterates over the set of managed persons.
 	 */
@@ -96,8 +95,7 @@ public interface PersonsManager {
 	 * names differ. The iterator will accordingly iterate over {@link #size()}
 	 * elements.
 	 * <p>
-	 * Calling {@link Iterator#remove()} on the returned iterator removes a person
-	 * from this manager.
+	 * (The returned iterator need not support removal.)
 	 *
 	 * @return an iterator that iterates over the set of managed ids.
 	 */
