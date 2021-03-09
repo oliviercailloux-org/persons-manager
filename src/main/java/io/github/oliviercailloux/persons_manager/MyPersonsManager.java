@@ -1,5 +1,6 @@
 package io.github.oliviercailloux.persons_manager;
 
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -50,8 +51,7 @@ class MyPersonsManager implements PersonsManager {
 
 	@Override
 	public Map<Integer, Person> toMap() {
-		TODO();
-		return null;
+		return persons.stream().collect(ImmutableMap.toImmutableMap(Person::getId, p -> p));
 	}
 
 	@Override
