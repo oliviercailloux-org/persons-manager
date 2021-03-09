@@ -1,5 +1,8 @@
 package io.github.oliviercailloux.persons_manager;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,13 +24,28 @@ class MyPersonsManager implements PersonsManager {
 	private Set<Person> persons;
 
 	MyPersonsManager() {
-		// …
+		persons = new LinkedHashSet<>();
 	}
 
 	@Override
 	public void setPersons(List<Person> persons) {
 		this.persons = new LinkedHashSet<>();
 		this.persons.addAll(persons);
+	}
+
+	@Override
+	public int size() {
+		return persons.size();
+	}
+
+	@Override
+	public boolean contains(String name) {
+		return persons.stream().anyMatch(p -> p.getName().equals(name));
+	}
+
+	@Override
+	public boolean contains(InputStream personNameAsStream) throws IOException {
+		return contains(new String(personNameAsStream.readAllBytes(), StandardCharsets.UTF_8));
 	}
 
 	@Override
@@ -52,5 +70,11 @@ class MyPersonsManager implements PersonsManager {
 	public RedundancyCounter getRedundancyCounter() {
 		TODO();
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		TODO();
+		return super.toString();
 	}
 }
