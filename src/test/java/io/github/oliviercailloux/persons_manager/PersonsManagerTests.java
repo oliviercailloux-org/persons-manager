@@ -56,16 +56,25 @@ public class PersonsManagerTests {
 		final Person john = Person.given(0, "John");
 		final Person leo = Person.given(0, "Éléonore");
 
-		final MyPersonsManager manager = new MyPersonsManager();
+		try (InputStream johnStream = new ByteArrayInputStream(john.getName().getBytes(StandardCharsets.UTF_8))) {
+			final MyPersonsManager manager = new MyPersonsManager();
+			assertFalse(manager.contains(johnStream));
+		}
 
 		try (InputStream johnStream = new ByteArrayInputStream(john.getName().getBytes(StandardCharsets.UTF_8))) {
-			assertFalse(manager.contains(johnStream));
+			final MyPersonsManager manager = new MyPersonsManager();
 			manager.setPersons(ImmutableList.of(john, leo));
 			assertTrue(manager.contains(johnStream));
 		}
 
 		try (InputStream leoStream = new ByteArrayInputStream(leo.getName().getBytes(StandardCharsets.UTF_8))) {
+			final MyPersonsManager manager = new MyPersonsManager();
+			manager.setPersons(ImmutableList.of(john));
 			assertFalse(manager.contains(leoStream));
+		}
+
+		try (InputStream leoStream = new ByteArrayInputStream(leo.getName().getBytes(StandardCharsets.UTF_8))) {
+			final MyPersonsManager manager = new MyPersonsManager();
 			manager.setPersons(ImmutableList.of(john, leo));
 			assertTrue(manager.contains(leoStream));
 		}
