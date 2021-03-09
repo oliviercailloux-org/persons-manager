@@ -1,6 +1,9 @@
 package io.github.oliviercailloux.persons_manager;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -22,16 +25,38 @@ import java.util.Set;
  */
 class MyPersonsManager implements PersonsManager {
 
+	private static class MyRedundancyCounter implements RedundancyCounter {
+		private MyPersonsManager manager;
+
+		private MyRedundancyCounter(MyPersonsManager manager) {
+			this.manager = checkNotNull(manager);
+		}
+
+		@Override
+		public int getRedundancyCount() {
+			return manager.lastListSize - manager.size();
+		}
+
+		@Override
+		public int getUniqueCount() {
+			return manager.size();
+		}
+
+	}
+
 	private Set<Person> persons;
+	private int lastListSize;
 
 	MyPersonsManager() {
 		persons = new LinkedHashSet<>();
+		lastListSize = 0;
 	}
 
 	@Override
 	public void setPersons(List<Person> persons) {
 		this.persons = new LinkedHashSet<>();
 		this.persons.addAll(persons);
+		lastListSize = persons.size();
 	}
 
 	@Override
@@ -56,25 +81,21 @@ class MyPersonsManager implements PersonsManager {
 
 	@Override
 	public Iterator<Person> personIterator() {
-		TODO();
-		return null;
+		return persons.iterator();
 	}
 
 	@Override
 	public Iterator<Integer> idIterator() {
-		TODO();
-		return null;
+		return Iterators.transform(persons.iterator(), Person::getId);
 	}
 
 	@Override
 	public RedundancyCounter getRedundancyCounter() {
-		TODO();
-		return null;
+		return new MyRedundancyCounter(this);
 	}
 
 	@Override
 	public String toString() {
-		TODO();
-		return super.toString();
+		return "PersonsManager with " + size() + " entries";
 	}
 }
