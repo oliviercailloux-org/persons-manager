@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterators;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -130,24 +129,6 @@ public class PersonsManagerTests {
 	}
 
 	@Test
-	void testIteratorRemove() throws Exception {
-		final Person john = Person.given(0, "John");
-		final Person mary = Person.given(1, "Mary");
-
-		final MyPersonsManager manager = new MyPersonsManager();
-		assertFalse(manager.personIterator().hasNext());
-		manager.setPersons(ImmutableList.of(john, mary));
-		assertEquals(2, manager.size());
-		final Iterator<Person> it = manager.personIterator();
-		assertTrue(it.hasNext());
-		it.next();
-		it.remove();
-		assertTrue(it.hasNext());
-
-		assertEquals(1, manager.size());
-	}
-
-	@Test
 	void testIdIterator() throws Exception {
 		final Person john = Person.given(0, "John");
 		final Person mary0 = Person.given(0, "Mary");
@@ -169,34 +150,6 @@ public class PersonsManagerTests {
 	}
 
 	@Test
-	void testIdIteratorRemove() throws Exception {
-		final Person john = Person.given(0, "John");
-		final Person mary0 = Person.given(0, "Mary");
-		final Person mary1 = Person.given(1, "Mary");
-
-		final MyPersonsManager manager = new MyPersonsManager();
-		assertFalse(manager.idIterator().hasNext());
-		manager.setPersons(ImmutableList.of(john, mary0, mary1));
-		assertEquals(3, manager.size());
-
-		final Iterator<Integer> it = manager.idIterator();
-		assertTrue(it.hasNext());
-		final int toRemove = it.next();
-		it.remove();
-		assertTrue(it.hasNext());
-
-		final int expectedNbId;
-		if (toRemove == 0) {
-			expectedNbId = 2;
-		} else {
-			expectedNbId = 1;
-		}
-
-		assertEquals(2, manager.size());
-		assertEquals(expectedNbId, Iterators.size(manager.idIterator()));
-	}
-
-	@Test
 	void testRedundancyCounter() throws Exception {
 		final Person john = Person.given(0, "John");
 		final Person mary = Person.given(0, "Mary");
@@ -206,7 +159,14 @@ public class PersonsManagerTests {
 		final RedundancyCounter counter = manager.getRedundancyCounter();
 		assertEquals(1, counter.getRedundancyCount());
 		assertEquals(2, counter.getUniqueCount());
+	}
 
+	@Test
+	void testRedundancyCounterAfterUpdate() throws Exception {
+		final Person john = Person.given(0, "John");
+
+		final MyPersonsManager manager = new MyPersonsManager();
+		final RedundancyCounter counter = manager.getRedundancyCounter();
 		manager.setPersons(ImmutableList.of(john));
 		assertEquals(0, counter.getRedundancyCount());
 		assertEquals(1, counter.getUniqueCount());
