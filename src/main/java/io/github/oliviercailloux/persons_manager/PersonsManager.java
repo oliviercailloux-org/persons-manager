@@ -68,6 +68,9 @@ public interface PersonsManager {
 	public boolean contains(InputStream personNameAsStream) throws IOException;
 
 	/**
+	 * Precondition: the set of persons that this instance manages must have unique
+	 * ids.
+	 * <p>
 	 * Returns an immutable copy of the persons this instance manages, as a mapping,
 	 * using the person’s id as a key.
 	 *
