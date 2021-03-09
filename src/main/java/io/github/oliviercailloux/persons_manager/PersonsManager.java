@@ -63,6 +63,7 @@ public interface PersonsManager {
 	 *                           UTF-8}.
 	 * @return <code>true</code> iff at least one person managed by this instance
 	 *         has the name given in the stream
+	 * @throws IOException if an I/O error occurs
 	 */
 	public boolean contains(InputStream personNameAsStream) throws IOException;
 
