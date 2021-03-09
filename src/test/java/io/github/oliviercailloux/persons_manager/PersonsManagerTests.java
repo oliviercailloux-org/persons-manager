@@ -9,7 +9,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterators;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -160,7 +159,14 @@ public class PersonsManagerTests {
 		final RedundancyCounter counter = manager.getRedundancyCounter();
 		assertEquals(1, counter.getRedundancyCount());
 		assertEquals(2, counter.getUniqueCount());
+	}
 
+	@Test
+	void testRedundancyCounterAfterUpdate() throws Exception {
+		final Person john = Person.given(0, "John");
+
+		final MyPersonsManager manager = new MyPersonsManager();
+		final RedundancyCounter counter = manager.getRedundancyCounter();
 		manager.setPersons(ImmutableList.of(john));
 		assertEquals(0, counter.getRedundancyCount());
 		assertEquals(1, counter.getUniqueCount());
