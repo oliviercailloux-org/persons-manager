@@ -36,7 +36,6 @@ public class PersonsManagerTests {
 		assertTrue(manager.size() == 2);
 		manager.setPersons(ImmutableList.of());
 		assertTrue(manager.size() == 0);
-
 	}
 
 	@Test

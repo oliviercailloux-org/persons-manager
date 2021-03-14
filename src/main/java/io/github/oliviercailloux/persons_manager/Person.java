@@ -5,6 +5,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.MoreObjects;
 import java.util.Objects;
 
+/**
+ * A person, with an id and a name. Two persons are identical, or “equal”, iff
+ * they have the same id and equal names.
+ */
 public class Person {
 	public static Person given(int id, String name) {
 		return new Person(id, name);

@@ -34,6 +34,16 @@ public interface PersonsManager {
 	public void setPersons(List<Person> persons);
 
 	/**
+	 * Sets the persons that this instance manages as a “task force”, understood as
+	 * a set of one or two persons. This replaces any persons previously set.
+	 *
+	 * @param persons not <code>null</code>, may contain non identical persons
+	 *                sharing an id.
+	 * @throws IllegalArgumentException if zero or more than two persons are given.
+	 */
+	public void setTaskForce(Person... persons);
+
+	/**
 	 * Returns the number of unique persons that this instance manages, thus, not
 	 * counting duplicates.
 	 *
