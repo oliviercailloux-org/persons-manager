@@ -1,7 +1,9 @@
 package io.github.oliviercailloux.persons_manager;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import java.io.IOException;
@@ -57,6 +59,13 @@ class MyPersonsManager implements PersonsManager {
 		this.persons = new LinkedHashSet<>();
 		this.persons.addAll(persons);
 		lastListSize = persons.size();
+	}
+
+	@Override
+	public void setTaskForce(Person... persons) {
+		final ImmutableList<Person> personsList = ImmutableList.copyOf(persons);
+		checkArgument(personsList.size() == 1 || personsList.size() == 2);
+		setPersons(personsList);
 	}
 
 	@Override
