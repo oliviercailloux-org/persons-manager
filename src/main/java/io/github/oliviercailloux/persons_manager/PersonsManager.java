@@ -114,9 +114,11 @@ public interface PersonsManager {
 	/**
 	 * Returns an instance linked to this manager, that is able to indicate how many
 	 * persons were redundant in the given list last time {@link #setPersons(List)}
-	 * was called (when a given person is exactly twice in the list, it counts for
-	 * one redundant entry); and how many unique persons are present in this
-	 * manager.
+	 * was called (when two persons in the list are equal, it counts for one
+	 * redundant entry; when three persons are equal, it counts for two redundant
+	 * entries; when two persons are equal and another three persons are equal, that
+	 * makes three redundant entries…); and how many unique persons are present in
+	 * this manager.
 	 * <p>
 	 * Both numbers are zero as long as {@link #setPersons(List)} is not called.
 	 * <p>
