@@ -46,6 +46,16 @@ class MyPersonsManager implements PersonsManager {
 
 	}
 
+	public static PersonsManager empty() {
+		return new MyPersonsManager();
+	}
+
+	public static PersonsManager given(Iterable<Person> persons) {
+		final MyPersonsManager manager = new MyPersonsManager();
+		manager.setPersons(ImmutableList.copyOf(persons));
+		return manager;
+	}
+
 	private Set<Person> persons;
 	private int lastListSize;
 
