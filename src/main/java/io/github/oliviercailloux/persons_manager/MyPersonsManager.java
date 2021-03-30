@@ -9,9 +9,9 @@ package io.github.oliviercailloux.persons_manager;
  * to initialize the set of persons that the returned instance will manage (this
  * also initializes correspondingly the redundancy counter).
  * <p>
- * The provided constructor is package-private (instead of private, usually
- * recommended) to allow access from test methods. You can leave it as it is, it
- * doesn’t hurt.
+ * The constructor that is provided for you is package-private (instead of
+ * private, usually recommended) to allow access from test methods. You can
+ * leave it as it is, it doesn’t hurt.
  *
  */
 class MyPersonsManager implements PersonsManager {
