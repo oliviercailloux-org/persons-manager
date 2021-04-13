@@ -90,6 +90,7 @@ public class PersonsManagerTests {
 		assertEquals(ImmutableMap.of(1, mary1, 0, john()), manager.toMap());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	void testMapImmutable() throws Exception {
 		final MyPersonsManager manager = new MyPersonsManager();

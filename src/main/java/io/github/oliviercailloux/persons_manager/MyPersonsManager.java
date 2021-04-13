@@ -1,50 +1,26 @@
 package io.github.oliviercailloux.persons_manager;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * This class should be instanciated using one of its static factory method (to
  * be created). One is named “empty”, admits no parameters, and returns a
  * manager that “manages” an empty set of persons; the other one is named
  * “given”, admits an iterable instance of persons as a parameter, and uses it
  * to initialize the set of persons that the returned instance will manage (this
  * also initializes correspondingly the redundancy counter).
- *
  */
 class MyPersonsManager implements PersonsManager {
-
-	private static class MyRedundancyCounter implements RedundancyCounter {
-		private MyPersonsManager manager;
-
-		private MyRedundancyCounter(MyPersonsManager manager) {
-			this.manager = checkNotNull(manager);
-		}
-
-		@Override
-		public int getRedundancyCount() {
-			return manager.lastListSize - manager.size();
-		}
-
-		@Override
-		public int getUniqueCount() {
-			return manager.size();
-		}
-
-	}
 
 	public static PersonsManager empty() {
 		return new MyPersonsManager();
@@ -83,9 +59,19 @@ class MyPersonsManager implements PersonsManager {
 		return persons.size();
 	}
 
+	int getLastListSize() {
+		return lastListSize;
+	}
+
 	@Override
 	public boolean contains(String name) {
-		return persons.stream().anyMatch(p -> p.getName().equals(name));
+//		return persons.stream().anyMatch(p -> p.getName().equals(name));
+		for (Person person : persons) {
+			if (person.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -94,8 +80,13 @@ class MyPersonsManager implements PersonsManager {
 	}
 
 	@Override
-	public Map<Integer, Person> toMap() {
-		return persons.stream().collect(ImmutableMap.toImmutableMap(Person::getId, p -> p));
+	public ImmutableMap<Integer, Person> toMap() {
+//		return persons.stream().collect(ImmutableMap.toImmutableMap(Person::getId, p -> p));
+		final ImmutableMap.Builder<Integer, Person> builder = ImmutableMap.builder();
+		for (Person person : persons) {
+			builder.put(person.getId(), person);
+		}
+		return builder.build();
 	}
 
 	@Override
@@ -105,12 +96,17 @@ class MyPersonsManager implements PersonsManager {
 
 	@Override
 	public Iterator<Integer> idIterator() {
-		return Iterators.transform(persons.iterator(), Person::getId);
+//		return Iterators.transform(persons.iterator(), Person::getId);
+		final ImmutableList.Builder<Integer> builder = ImmutableList.builder();
+		for (Person person : persons) {
+			builder.add(person.getId());
+		}
+		return builder.build().iterator();
 	}
 
 	@Override
 	public RedundancyCounter getRedundancyCounter() {
-		return new MyRedundancyCounter(this);
+		return MyRedundancyCounter.linkedTo(this);
 	}
 
 	@Override
