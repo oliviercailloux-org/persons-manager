@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -98,7 +97,7 @@ class MyPersonsManager implements PersonsManager {
 	}
 
 	@Override
-	public Map<Integer, Person> toMap() {
+	public ImmutableMap<Integer, Person> toMap() {
 		return persons.stream().collect(ImmutableMap.toImmutableMap(Person::getId, p -> p));
 	}
 
